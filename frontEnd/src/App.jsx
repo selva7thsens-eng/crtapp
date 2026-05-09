@@ -76,7 +76,7 @@ function App() {
       const result = await response.json();
       console.log("Success:", result);
       
-      if (result.data.clinic_name) {
+      if (result.id) {
         setPage('reportShow')
       }
 
