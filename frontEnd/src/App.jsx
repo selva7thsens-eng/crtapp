@@ -43,7 +43,7 @@ function App() {
   });
 
  
-  const onSubmit = async (data) => {
+ /// const onSubmit = async (data) => {
     // try {
     //   const response =
     //     await submitCardioForm(data);
@@ -58,7 +58,7 @@ function App() {
     // } catch (error) {
     //   toast.error("Submission failed");
     // }
-  };
+ // };
 
   const [page, setPage] = useState('form')
 
@@ -96,7 +96,7 @@ function App() {
 )}
       {page == 'form' && <>
       <ToastContainer />
-      <form >
+      <form onSubmit={handleSubmit(sendDataToAPI)}>
         <Header
           register={register}
           errors={errors}
