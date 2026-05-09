@@ -96,7 +96,7 @@ function App() {
 )}
       {page == 'form' && <>
       <ToastContainer />
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form >
         <Header
           register={register}
           errors={errors}
