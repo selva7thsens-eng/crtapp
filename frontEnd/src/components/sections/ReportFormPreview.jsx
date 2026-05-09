@@ -6,7 +6,7 @@ function ReportFormPreview({ setPage }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/arrest-forms")
+    fetch("https://crtapp-backend-q4xk.onrender.com/arrest-forms")
       .then((res) => res.json())
       .then((res) => setData(res))
       .catch((err) => console.log("API Error:", err));
