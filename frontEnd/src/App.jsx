@@ -65,7 +65,7 @@ function App() {
     const sendDataToAPI = async (data) => {
       debugger
     try {
-      const response = await fetch("http://127.0.0.1:8000/arrest-form", {
+      const response = await fetch("https://crtapp-backend-q4xk.onrender.com/arrest-form", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
