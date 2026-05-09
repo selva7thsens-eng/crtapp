@@ -44,20 +44,20 @@ function App() {
 
  
   const onSubmit = async (data) => {
-    try {
-      const response =
-        await submitCardioForm(data);
+    // try {
+    //   const response =
+    //     await submitCardioForm(data);
 
-      if (response.success) {
-        toast.success(
-          "Form submitted successfully"
-        );
+    //   if (response.success) {
+    //     toast.success(
+    //       "Form submitted successfully"
+    //     );
 
-        reset();
-      }
-    } catch (error) {
-      toast.error("Submission failed");
-    }
+    //     reset();
+    //   }
+    // } catch (error) {
+    //   toast.error("Submission failed");
+    // }
   };
 
   const [page, setPage] = useState('form')
