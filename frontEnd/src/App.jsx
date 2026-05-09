@@ -63,7 +63,7 @@ function App() {
   const [page, setPage] = useState('form')
 
     const sendDataToAPI = async (data) => {
-      debugger
+      
     try {
       const response = await fetch("https://crtapp-backend-q4xk.onrender.com/arrest-form", {
         method: "POST",
@@ -86,10 +86,8 @@ function App() {
   };
  
 
-
   return (
     <div className="max-w-[1800px] mx-auto p-4">
-
     
       {page === 'reportShow' && (
   <ReportFormPreview setPage={setPage} />
