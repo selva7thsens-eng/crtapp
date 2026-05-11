@@ -1,57 +1,60 @@
 const initialValues = {
-  patientName: "",
-  nric: "",
-  clinicName: "",
-
+  headerInformation: {
+    patientName: "",
+    nric: "",
+    clinicName: ""
+  },
+  basicInformation: {
   arrestDateTime: "",
   location: "",
-
   doctorInformedBy: "",
   doctorAt: "",
   doctorArrivedAt: "",
   doctorName: "",
-
   relativesInformedBy: "",
   relativesAt: "",
   relativesArrivedAt: "",
   relativeName: "",
-
   ambulanceCalledBy: "",
   ambulanceAt: "",
   ambulanceArrivedAt: "",
-
   hdConcludedAt: "",
-  hdConcludedBy: "",
+  hdBy: ""
+},
 
-  respiration: "",
-  oxygenAdministered: "",
-  assistVentilationAt: "",
-  ventilationBy: "",
-  intubatedBy: "",
-  intubatedTime: "",
-  tubeSize: "",
+  airwayVentilation: {
+    respiration: "",
+    oxygenAdministered: "",
+    assistVentilationAt: "",
+    ventilationBy: "",
+    intubatedBy: "",
+    intubatedTime: "",
+    tubeSize: ""
+  },
 
-  carotidPulse: "",
-  bloodPressure: "",
-  bpTime: "",
-  ecgRhythm: "",
-  ecgTime: "",
-  chestCompressionAt: "",
-  chestCompressionBy: "",
-  aedApplied: "",
-  aedTime: "",
+  circulation: {
+    carotidPulse: "",
+    bloodPressure: "",
+    bpTime: "",
+    ecgRhythm: "",
+    ecgTime: "",
+    chestCompressionAt: "",
+    chestCompressionBy: "",
+    aedApplied: "",
+    aedTime: ""
+  },
 
-  avfAccess: "",
-  avfTime: "",
-  avfSite: "",
-
-  cvcAccess: "",
-  cvcTime: "",
-  cvcSite: "",
-
-  ivCannulaTime: "",
-  ivCannulaSite: "",
-  insertedBy: "",
+  vascularAccess: {
+    avfAccess: "",
+    avfTime: "",
+    avfSite: "",
+    cvcAccess: "",
+    cvcTime: "",
+    cvcSite: "",
+    ivCannulaTime: "",
+    ivCannulaSite: "",
+    insertedBy: ""
+  },
 
   observations: [
     {
@@ -62,43 +65,41 @@ const initialValues = {
       pupils: "",
       ecgRhythm: "",
       printedTracing: "",
-    },
+       notes: ""
+    }
   ],
 
   drugRecords: [
     {
       time: "",
       ecgRhythm: "",
-      aedDefibrillation: "",
       adrenaline: "",
       atropine: "",
-      calciumGluconate: "",
-      nahco3: "",
-      otherDrugs: "",
       route: "",
-      administeredBy: "",
-    },
+      administeredBy: ""
+    }
   ],
 
-  cprEnded: "",
-  returnOfCirculation: false,
-  rosHr: "",
-  rosBp: "",
-  rosRr: "",
+  outcome: {
+    cprEnded: "",
+    returnOfCirculation: false,
+    rosHr: "",
+    rosBp: "",
+    rosRr: "",
+    emsArrived: false,
+    emsAt: "",
+    cprHandoverTime: "",
+    transferredTo: "",
+    transferredTime: "",
+     escortedBy: "" 
+  },
 
-  emsArrived: false,
-  emsAt: "",
-  cprHandoverTime: "",
-
-  transferredTo: "",
-  transferredTime: "",
-
-  // ✅ FIXED HERE
+  
   nurses: [
-    { name: "", time: "" },
-    { name: "", time: "" },
-    { name: "", time: "" },
-  ],
+    { name: "", signature: "" },
+    { name: "", signature: "" },
+    { name: "", signature: "" }
+  ]
 };
 
 export default initialValues;

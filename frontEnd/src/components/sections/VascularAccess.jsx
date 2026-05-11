@@ -25,12 +25,22 @@ const VascularAccess = ({ register }) => {
             <div className="flex items-center gap-6 border border-gray-300 bg-gray-50 rounded-md px-4 py-2 h-[42px]">
 
               <label className="flex items-center gap-2 text-sm">
-                <input type="radio" value="Yes" {...register("avfAccess")} className="accent-blue-600" />
+                <input
+                  type="radio"
+                  value="Yes"
+                  {...register("vascularAccess.avfAccess")}
+                  className="accent-blue-600"
+                />
                 Yes
               </label>
 
               <label className="flex items-center gap-2 text-sm">
-                <input type="radio" value="No" {...register("avfAccess")} className="accent-blue-600" />
+                <input
+                  type="radio"
+                  value="No"
+                  {...register("vascularAccess.avfAccess")}
+                  className="accent-blue-600"
+                />
                 No
               </label>
 
@@ -42,7 +52,10 @@ const VascularAccess = ({ register }) => {
               Specify Site
             </label>
 
-            <input {...register("avfSite")} className={inputStyle} />
+            <input
+              {...register("vascularAccess.avfSite")}
+              className={inputStyle}
+            />
           </div>
 
         </div>
@@ -58,12 +71,22 @@ const VascularAccess = ({ register }) => {
             <div className="flex items-center gap-6 border border-gray-300 bg-gray-50 rounded-md px-4 py-2 h-[42px]">
 
               <label className="flex items-center gap-2 text-sm">
-                <input type="radio" value="Yes" {...register("cvcAccess")} className="accent-blue-600" />
+                <input
+                  type="radio"
+                  value="Yes"
+                  {...register("vascularAccess.cvcAccess")}
+                  className="accent-blue-600"
+                />
                 Yes
               </label>
 
               <label className="flex items-center gap-2 text-sm">
-                <input type="radio" value="No" {...register("cvcAccess")} className="accent-blue-600" />
+                <input
+                  type="radio"
+                  value="No"
+                  {...register("vascularAccess.cvcAccess")}
+                  className="accent-blue-600"
+                />
                 No
               </label>
 
@@ -75,7 +98,10 @@ const VascularAccess = ({ register }) => {
               Specify Site
             </label>
 
-            <input {...register("cvcSite")} className={inputStyle} />
+            <input
+              {...register("vascularAccess.cvcSite")}
+              className={inputStyle}
+            />
           </div>
 
         </div>
@@ -88,19 +114,35 @@ const VascularAccess = ({ register }) => {
               Time IV Cannula Initiated
             </label>
 
-            <input type="time" {...register("ivCannulaTime")} className={inputStyle} />
+            <input
+              type="time"
+              {...register("vascularAccess.ivCannulaTime")}
+              className={inputStyle}
+            />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
 
             <div>
-              <label className="block text-sm font-semibold mb-2">Site</label>
-              <input {...register("ivCannulaSite")} className={inputStyle} />
+              <label className="block text-sm font-semibold mb-2">
+                Site
+              </label>
+
+              <input
+                {...register("vascularAccess.ivCannulaSite")}
+                className={inputStyle}
+              />
             </div>
 
             <div>
-              <label className="block text-sm font-semibold mb-2">Inserted By</label>
-              <input {...register("ivCannulaInsertedBy")} className={inputStyle} />
+              <label className="block text-sm font-semibold mb-2">
+                Inserted By
+              </label>
+
+              <input
+                {...register("vascularAccess.insertedBy")}
+                className={inputStyle}
+              />
             </div>
 
           </div>

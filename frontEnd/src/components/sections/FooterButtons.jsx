@@ -1,10 +1,11 @@
 import React from "react";
 
 const FooterButtons = () => {
-  return (
-    <div className="flex justify-end gap-4 mt-8">
 
-      {/* Save Draft - Gray Button */}
+  return (
+    <div className="flex justify-end gap-4 mt-8 mb-4">
+
+      {/* Save Draft */}
       <button
         type="button"
         className="
@@ -18,7 +19,7 @@ const FooterButtons = () => {
         Save Draft
       </button>
 
-      {/* Submit - Blue Button */}
+      {/* Submit */}
       <button
         type="submit"
         className="

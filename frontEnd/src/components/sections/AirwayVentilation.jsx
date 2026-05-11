@@ -1,4 +1,3 @@
-
 const inputStyle =
   "w-full border border-blue-100 bg-gray-50 rounded-md px-3 py-2 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all";
 
@@ -33,7 +32,7 @@ const AirwayVentilation = ({
                 <input
                   type="radio"
                   value="Present"
-                  {...register("respiration")}
+                  {...register("airwayVentilation.respiration")}
                   className="accent-blue-600"
                 />
                 Present
@@ -43,7 +42,7 @@ const AirwayVentilation = ({
                 <input
                   type="radio"
                   value="Absent"
-                  {...register("respiration")}
+                  {...register("airwayVentilation.respiration")}
                   className="accent-blue-600"
                 />
                 Absent
@@ -62,7 +61,7 @@ const AirwayVentilation = ({
 
               <input
                 type="number"
-                {...register("oxygenAdministered")}
+                {...register("airwayVentilation.oxygenAdministered")}
                 className={inputStyle}
                 placeholder="Enter oxygen"
               />
@@ -86,7 +85,7 @@ const AirwayVentilation = ({
 
             <input
               type="time"
-              {...register("assistVentilationTime")}
+              {...register("airwayVentilation.assistVentilationAt")}
               className={inputStyle}
             />
           </div>
@@ -97,7 +96,7 @@ const AirwayVentilation = ({
             </label>
 
             <input
-              {...register("assistVentilationBy")}
+              {...register("airwayVentilation.ventilationBy")}
               className={inputStyle}
               placeholder="Enter name"
             />
@@ -114,7 +113,7 @@ const AirwayVentilation = ({
             </label>
 
             <input
-              {...register("patientIntubatedBy")}
+              {...register("airwayVentilation.intubatedBy")}
               className={inputStyle}
               placeholder="Enter name"
             />
@@ -127,7 +126,7 @@ const AirwayVentilation = ({
 
             <input
               type="time"
-              {...register("intubationTime")}
+              {...register("airwayVentilation.intubatedTime")}
               className={inputStyle}
             />
           </div>
@@ -138,7 +137,7 @@ const AirwayVentilation = ({
             </label>
 
             <input
-              {...register("intubationSize")}
+              {...register("airwayVentilation.tubeSize")}
               className={inputStyle}
               placeholder="Enter size"
             />
@@ -153,4 +152,3 @@ const AirwayVentilation = ({
 };
 
 export default AirwayVentilation;
- 

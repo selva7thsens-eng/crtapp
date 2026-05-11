@@ -12,6 +12,7 @@ const DrugAdministration = ({ register }) => {
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 mt-4 overflow-hidden">
+
       {/* Header */}
       <div className="w-full text-blue-900 py-4 flex px-4">
         <h1 className="text-lg font-bold text-center">
@@ -21,6 +22,7 @@ const DrugAdministration = ({ register }) => {
 
       <div className="overflow-x-auto">
         <table className="w-full border-collapse text-sm">
+
           <thead className="bg-gray-50 text-gray-700">
             <tr>
               <th className="border border-gray-200 p-2">Time</th>
@@ -39,66 +41,67 @@ const DrugAdministration = ({ register }) => {
           <tbody>
             {rows.map((row, index) => (
               <tr key={row} className="hover:bg-blue-50 transition">
+
                 <td className="border border-gray-200 p-2">
                   <input
                     type="time"
-                    {...register(`drugRecord.${index}.time`)}
+                    {...register(`drugRecords.${index}.time`)}
                     className={inputStyle}
                   />
                 </td>
 
                 <td className="border border-gray-200 p-2">
                   <input
-                    {...register(`drugRecord.${index}.ecgRhythm`)}
+                    {...register(`drugRecords.${index}.ecgRhythm`)}
                     className={inputStyle}
                   />
                 </td>
 
                 <td className="border border-gray-200 p-2">
                   <input
-                    {...register(`drugRecord.${index}.aedDefibrillation`)}
+                    {...register(`drugRecords.${index}.aedDefibrillation`)}
                     className={inputStyle}
                   />
                 </td>
 
                 <td className="border border-gray-200 p-2">
                   <input
-                    {...register(`drugRecord.${index}.adrenaline`)}
+                    {...register(`drugRecords.${index}.adrenaline`)}
                     className={inputStyle}
                   />
                 </td>
 
                 <td className="border border-gray-200 p-2">
                   <input
-                    {...register(`drugRecord.${index}.atropine`)}
+                    {...register(`drugRecords.${index}.atropine`)}
                     className={inputStyle}
                   />
                 </td>
 
                 <td className="border border-gray-200 p-2">
                   <input
-                    {...register(`drugRecord.${index}.caGluconate`)}
+                    {...register(`drugRecords.${index}.caGluconate`)}
                     className={inputStyle}
                   />
                 </td>
 
                 <td className="border border-gray-200 p-2">
                   <input
-                    {...register(`drugRecord.${index}.naHCO3`)}
+                    {...register(`drugRecords.${index}.naHCO3`)}
                     className={inputStyle}
                   />
                 </td>
 
                 <td className="border border-gray-200 p-2">
                   <input
-                    {...register(`drugRecord.${index}.otherDrugs`)}
+                    {...register(`drugRecords.${index}.otherDrugs`)}
                     className={inputStyle}
                   />
                 </td>
 
                 <td className="border border-gray-200 p-2">
                   <select
-                    {...register(`drugRecord.${index}.route`)}
+                    {...register(`drugRecords.${index}.route`)}
                     className={inputStyle}
                   >
                     <option value="">Select</option>
@@ -109,13 +112,15 @@ const DrugAdministration = ({ register }) => {
 
                 <td className="border border-gray-300 p-2">
                   <input
-                    {...register(`drugRecord.${index}.administeredBy`)}
+                    {...register(`drugRecords.${index}.administeredBy`)}
                     className={inputStyle}
                   />
                 </td>
+
               </tr>
             ))}
           </tbody>
+
         </table>
       </div>
 
@@ -129,6 +134,7 @@ const DrugAdministration = ({ register }) => {
           + Add Row
         </button>
       </div>
+
     </div>
   );
 };

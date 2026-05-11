@@ -5,14 +5,11 @@ const OutcomeResuscitation = ({ register }) => {
   return (
     <div className="bg-white rounded-lg shadow-sm border border-blue-200 overflow-hidden">
 
-      {/* HEADER */}
-    
-       <div className="p-4 space-y-5">
-        <h2 className="font-bold text-blue-800">
-           OUTCOME OF RESUSCITATION
-        </h2> 
+      <div className="p-4 space-y-5">
 
-      
+        <h2 className="font-bold text-blue-800">
+          OUTCOME OF RESUSCITATION
+        </h2>
 
         {/* ROW 1 */}
         <div className="grid grid-cols-3 gap-4">
@@ -24,7 +21,7 @@ const OutcomeResuscitation = ({ register }) => {
 
             <input
               type="time"
-              {...register("cprEnded")}
+              {...register("outcome.cprEnded")}
               className={inputStyle}
             />
           </div>
@@ -34,7 +31,7 @@ const OutcomeResuscitation = ({ register }) => {
         {/* RETURN OF CIRCULATION */}
         <div className="space-y-4">
 
-          <div className=" px-2 py-2">
+          <div className="px-2 py-2">
             <h3 className="font-semibold text-blue-800 text-sm">
               RETURN OF CIRCULATION
             </h3>
@@ -42,40 +39,37 @@ const OutcomeResuscitation = ({ register }) => {
 
           <div className="grid grid-cols-3 gap-4">
 
-            {/* HR */}
             <div>
               <label className="block text-sm font-semibold mb-2">
                 Heart Rate (HR)
               </label>
 
               <input
-                {...register("returnHR")}
+                {...register("outcome.rosHr")}
                 className={inputStyle}
                 placeholder="Enter HR"
               />
             </div>
 
-            {/* BP */}
             <div>
               <label className="block text-sm font-semibold mb-2">
                 Blood Pressure (BP)
               </label>
 
               <input
-                {...register("returnBP")}
+                {...register("outcome.rosBp")}
                 className={inputStyle}
                 placeholder="Enter BP"
               />
             </div>
 
-            {/* RR */}
             <div>
               <label className="block text-sm font-semibold mb-2">
                 Respiration Rate (RR)
               </label>
 
               <input
-                {...register("returnRR")}
+                {...register("outcome.rosRr")}
                 className={inputStyle}
                 placeholder="Enter RR"
               />
@@ -95,7 +89,7 @@ const OutcomeResuscitation = ({ register }) => {
 
             <input
               type="time"
-              {...register("emsArrivedAt")}
+              {...register("outcome.emsAt")}
               className={inputStyle}
             />
           </div>
@@ -107,7 +101,7 @@ const OutcomeResuscitation = ({ register }) => {
 
             <input
               type="time"
-              {...register("cprHandoverTime")}
+              {...register("outcome.cprHandoverTime")}
               className={inputStyle}
             />
           </div>
@@ -123,7 +117,7 @@ const OutcomeResuscitation = ({ register }) => {
             </label>
 
             <input
-              {...register("transferredTo")}
+              {...register("transfer.transferredTo")}
               className={inputStyle}
               placeholder="Enter destination"
             />
@@ -136,7 +130,7 @@ const OutcomeResuscitation = ({ register }) => {
 
             <input
               type="time"
-              {...register("transferTime")}
+              {...register("transfer.transferredTime")}
               className={inputStyle}
             />
           </div>
@@ -147,7 +141,7 @@ const OutcomeResuscitation = ({ register }) => {
             </label>
 
             <input
-              {...register("escortedBy")}
+              {...register("transfer.escortedBy")}
               className={inputStyle}
               placeholder="Enter escort name"
             />
@@ -156,7 +150,6 @@ const OutcomeResuscitation = ({ register }) => {
         </div>
 
       </div>
-
     </div>
   );
 };

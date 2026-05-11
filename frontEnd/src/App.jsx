@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 
 
 import "react-toastify/dist/ReactToastify.css";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 import Header from "./components/sections/Header";
 import StepperHeader from "./components/sections/StepperHeader";
@@ -32,6 +34,7 @@ function App() {
   const {
     register,
     watch,
+    setValue,
     handleSubmit,
     control,
     formState: { errors },
@@ -42,30 +45,16 @@ function App() {
     defaultValues: initialValues,
   });
 
+ const [currentStep, setCurrentStep] = useState(1);
+
  
- /// const onSubmit = async (data) => {
-    // try {
-    //   const response =
-    //     await submitCardioForm(data);
-
-    //   if (response.success) {
-    //     toast.success(
-    //       "Form submitted successfully"
-    //     );
-
-    //     reset();
-    //   }
-    // } catch (error) {
-    //   toast.error("Submission failed");
-    // }
- // };
 
   const [page, setPage] = useState('form')
 
     const sendDataToAPI = async (data) => {
       debugger
     try {
-      const response = await fetch("https://crtapp-backend-q4xk.onrender.com/arrest-form", {
+      const response = await fetch("http://127.0.0.1:8000/arrest-forms", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -85,75 +74,142 @@ function App() {
     }
   };
  
+  //Initially scroll show and each time show scroll container
+ const scrollRef = useRef(null);
+useEffect(() => {
+  const container = scrollRef.current;
 
+  const handleScroll = () => {
+    const sections = [
+      "basic-info",
+      "airway-circulation",
+      "vascular-observation",
+      "outcome-drug",
+      "signature-submit",
+    ];
+
+    const scrollTop = container.scrollTop;
+
+    sections.forEach((sectionId, index) => {
+      const section = document.getElementById(sectionId);
+
+      if (section) {
+        const offsetTop = section.offsetTop;
+
+        // + stepper height offset
+        const adjustedTop = offsetTop - 100;
+
+        if (scrollTop >= adjustedTop) {
+          setCurrentStep(index + 1);
+        }
+      }
+    });
+  };
+
+  container?.addEventListener("scroll", handleScroll);
+
+  return () => {
+    container?.removeEventListener("scroll", handleScroll);
+  };
+}, []);
 
   return (
-    <div className="max-w-[1800px] mx-auto p-4">
+    <div className="max-w-[1800px] mx-auto">
 
-    
+   
       {page === 'reportShow' && (
   <ReportFormPreview setPage={setPage} />
 )}
-      {page == 'form' && <>
+      {page == 'form' && (
+        <>
       <ToastContainer />
-      <form onSubmit={handleSubmit(sendDataToAPI)}>
+       <div
+    ref={scrollRef}
+    className="flex-1 overflow-y-auto"
+  >
+
+  
+   <form
+  onSubmit={handleSubmit(
+    (data) => {
+      console.log("FORM DATA =>", data);
+
+      sendDataToAPI(data);
+    },
+
+    (errors) => {
+      console.log("VALIDATION ERRORS =>", errors);
+    }
+  )}
+>
+
         <Header
           register={register}
           errors={errors}
-          onSubmit={sendDataToAPI}
+          
         />
 
-        <StepperHeader />
-
-        <BasicInformation
-          register={register}
-          errors={errors}
-        />
-
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-
-      <AirwayVentilation
-  register={register}
-  errors={errors}
-  watch={watch}
+      <StepperHeader
+  currentStep={currentStep}
+  setCurrentStep={setCurrentStep}
+  scrollRef={scrollRef}
 />
 
-<CirculationSection
-  register={register}
-  errors={errors}
-  watch={watch}
-/>
+ <div id="basic-info">
+  <BasicInformation
+    register={register}
+    setValue={setValue}
+    watch={watch}
+    errors={errors}
+  />
+</div>      
+<div id="airway-circulation">
+  <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+    <AirwayVentilation
+      register={register}
+      errors={errors}
+      watch={watch}
+    />
+
+    <CirculationSection
+      register={register}
+      errors={errors}
+      watch={watch}
+    />
+  </div>
 </div>
-      
 
+<div id="vascular-observation">
   <VascularAccess register={register} />
 
-  <ObservationTable
+ <ObservationTable
+  control={control}
+  register={register}
+/>
+</div>
+  
+<div id="outcome-drug">
+  <OutcomeResuscitation register={register} />
+
+  <DrugAdministration
     register={register}
-    observationFields={[{}]}
-    appendObservation={[{}]}
-    removeObservation={[{}]}
-  /> 
-
-        <OutcomeResuscitation
-          register={register}
-        />
-
-        <DrugAdministration
-          register={register}
-          control={control}
-        />
-
-        <SignatureSection
-          register={register}
-          control={control}
-          errors={errors}
-        />
-
-        <FooterButtons />
+    control={control}
+  />
+</div>
+<div id="signature-submit">
+  <SignatureSection
+    register={register}
+    control={control}
+    setValue={setValue}
+    errors={errors}
+  />
+</div>
+  <FooterButtons />
+ 
       </form>
+      </div>
       </>
-}
+)}
     </div>
   );
 }
