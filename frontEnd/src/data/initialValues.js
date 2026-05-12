@@ -5,21 +5,21 @@ const initialValues = {
     clinicName: ""
   },
   basicInformation: {
-  arrestDateTime: "",
-  location: "",
-  doctorInformedBy: "",
-  doctorAt: "",
-  doctorArrivedAt: "",
-  doctorName: "",
-  relativesInformedBy: "",
-  relativesAt: "",
-  relativesArrivedAt: "",
-  relativeName: "",
-  ambulanceCalledBy: "",
-  ambulanceAt: "",
-  ambulanceArrivedAt: "",
-  hdConcludedAt: "",
-  hdBy: ""
+    arrestDateTime: "",
+    location: "",
+    doctorInformedBy: "",
+    doctorAt: "",
+    doctorArrivedAt: "",
+    doctorName: "",
+    relativesInformedBy: "",
+    relativesAt: "",
+    relativesArrivedAt: "",
+    relativeName: "",
+    ambulanceCalledBy: "",
+    ambulanceAt: "",
+    ambulanceArrivedAt: "",
+    hdConcludedAt: "",
+    hdBy: ""
 },
 
   airwayVentilation: {
@@ -73,8 +73,12 @@ const initialValues = {
     {
       time: "",
       ecgRhythm: "",
+      aedDefibrillation:"",
       adrenaline: "",
       atropine: "",
+      caGluconate:"",
+      naHCO3:"",
+      otherDrugs:"",
       route: "",
       administeredBy: ""
     }
