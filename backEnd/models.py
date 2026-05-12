@@ -126,13 +126,20 @@ class Observation(Base):
 class DrugRecord(Base):
     __tablename__ = "drug_records"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, index=True)
     form_id = Column(Integer, ForeignKey("arrest_forms.id"))
 
     time = Column(String)
     ecg_rhythm = Column(String)
+
     adrenaline = Column(String)
     atropine = Column(String)
+
+    aed_defibrillation = Column(String)
+    ca_gluconate = Column(String)
+    na_hco3 = Column(String)
+    other_drugs = Column(String)
+
     route = Column(String)
     administered_by = Column(String)
 

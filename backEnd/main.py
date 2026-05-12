@@ -3,6 +3,14 @@ from sqlalchemy.orm import Session
 from database import SessionLocal, engine, Base
 from fastapi.middleware.cors import CORSMiddleware
 
+
+from fastapi.responses import StreamingResponse
+from sqlalchemy.orm import Session
+from io import BytesIO
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas
+
+
 from models import (
     ArrestForm,
     BasicInformation,
@@ -42,7 +50,6 @@ def get_db():
         db.close()
 
 
-```python
 # ---------------- GET SINGLE FORM FULL DETAILS ----------------
 
 @app.get("/arrest-forms/{form_id}")
@@ -174,7 +181,6 @@ def get_form_by_id(form_id: int, db: Session = Depends(get_db)):
             for nurse in form.nurses
         ]
     }
-```
 
 
 # ---------------- CREATE FORM ----------------
@@ -319,6 +325,7 @@ def create_form(data: ArrestFormCreate, db: Session = Depends(get_db)):
             atropine=drug.atropine,
             route=drug.route,
             administered_by=drug.administeredBy,
+
         )
 
         db.add(drug_record)
@@ -343,3 +350,178 @@ def create_form(data: ArrestFormCreate, db: Session = Depends(get_db)):
         "id": form.id
     }
 
+ 
+
+@app.get("/arrest-forms/{form_id}/pdf")
+def download_pdf(form_id: int, db: Session = Depends(get_db)):
+
+    form = db.query(ArrestForm).filter(ArrestForm.id == form_id).first()
+
+    if not form:
+        return {"message": "Form not found"}
+
+    buffer = BytesIO()
+    pdf = canvas.Canvas(buffer, pagesize=A4)
+
+    width, height = A4
+    y = height - 50
+
+    def write(text, step=16):
+        nonlocal y
+        if y < 50:
+            pdf.showPage()
+            y = height - 50
+        pdf.drawString(50, y, str(text))
+        y -= step
+
+    # ================= HEADER =================
+    write("CARDIOPULMONARY ARREST REPORT")
+    write(f"Form ID: {form.id}")
+    write(f"Patient Name: {form.patient_name}")
+    write(f"NRIC: {form.nric}")
+    write(f"Clinic: {form.clinic_name}")
+    write("--------------------------------------------------")
+
+    # ================= BASIC INFORMATION =================
+    write("BASIC INFORMATION")
+
+    if form.basic:
+        write(f"Arrest DateTime: {form.basic.arrestDateTime}")
+        write(f"Location: {form.basic.location}")
+
+        write(f"Doctor Informed By: {form.basic.doctor_informed_by}")
+        write(f"Doctor At: {form.basic.doctor_at}")
+        write(f"Doctor Arrived At: {form.basic.doctor_arrived_at}")
+        write(f"Doctor Name: {form.basic.doctor_name}")
+
+        write(f"Relatives Informed By: {form.basic.relatives_informed_by}")
+        write(f"Relatives At: {form.basic.relatives_at}")
+        write(f"Relatives Arrived At: {form.basic.relatives_arrived_at}")
+        write(f"Relative Name: {form.basic.relative_name}")
+
+        write(f"Ambulance Called By: {form.basic.ambulance_called_by}")
+        write(f"Ambulance At: {form.basic.ambulance_at}")
+        write(f"Ambulance Arrived At: {form.basic.ambulance_arrived_at}")
+
+        write(f"HD Concluded At: {form.basic.hd_concluded_at}")
+        write(f"HD By: {form.basic.hd_by}")
+
+    write("--------------------------------------------------")
+
+    # ================= AIRWAY =================
+    write("AIRWAY / VENTILATION")
+
+    if form.airway:
+        write(f"Respiration: {form.airway.respiration}")
+        write(f"Oxygen Administered: {form.airway.oxygen_administered}")
+        write(f"Assist Ventilation At: {form.airway.assist_ventilation_at}")
+        write(f"Ventilation By: {form.airway.ventilation_by}")
+        write(f"Intubated By: {form.airway.intubated_by}")
+        write(f"Intubated Time: {form.airway.intubated_time}")
+        write(f"Tube Size: {form.airway.tube_size}")
+
+    write("--------------------------------------------------")
+
+    # ================= CIRCULATION =================
+    write("CIRCULATION")
+
+    if form.circulation:
+        write(f"Carotid Pulse: {form.circulation.carotid_pulse}")
+        write(f"Blood Pressure: {form.circulation.blood_pressure}")
+        write(f"BP Time: {form.circulation.bp_time}")
+        write(f"ECG Rhythm: {form.circulation.ecg_rhythm}")
+        write(f"ECG Time: {form.circulation.ecg_time}")
+        write(f"Chest Compression At: {form.circulation.chest_compression_at}")
+        write(f"Chest Compression By: {form.circulation.chest_compression_by}")
+        write(f"AED Applied: {form.circulation.aed_applied}")
+        write(f"AED Time: {form.circulation.aed_time}")
+
+    write("--------------------------------------------------")
+
+    # ================= VASCULAR ACCESS =================
+    write("VASCULAR ACCESS")
+
+    if form.vascular:
+        write(f"AVF Access: {form.vascular.avf_access}")
+        write(f"AVF Time: {form.vascular.avf_time}")
+        write(f"AVF Site: {form.vascular.avf_site}")
+
+        write(f"CVC Access: {form.vascular.cvc_access}")
+        write(f"CVC Time: {form.vascular.cvc_time}")
+        write(f"CVC Site: {form.vascular.cvc_site}")
+
+        write(f"IV Cannula Time: {form.vascular.iv_cannula_time}")
+        write(f"IV Site: {form.vascular.iv_cannula_site}")
+        write(f"Inserted By: {form.vascular.inserted_by}")
+
+    write("--------------------------------------------------")
+
+    # ================= OBSERVATIONS =================
+    write("OBSERVATIONS")
+
+    for obs in form.observations:
+        write(
+            f"{obs.time} | HR:{obs.hr} | BP:{obs.bp} | RR:{obs.rr} | "
+            f"PUPILS:{obs.pupils} | ECG:{obs.ecg_rhythm} | "
+            f"Tracing:{obs.printed_tracing} | Notes:{obs.notes}"
+        )
+
+    write("--------------------------------------------------")
+
+    # ================= DRUG RECORDS =================
+    write("DRUG RECORDS")
+
+    for drug in form.drug_records:
+        write(
+            f"{drug.time} | ECG:{drug.ecg_rhythm} | "
+            f"AED:{drug.aed_defibrillation} | "
+            f"ADRENALINE:{drug.adrenaline} | "
+            f"ATROPINE:{drug.atropine} | "
+            f"CA GLUCONATE:{drug.ca_gluconate} | "
+            f"NAHCO3:{drug.na_hco3} | "
+            f"OTHER:{drug.other_drugs} | "
+            f"ROUTE:{drug.route}"
+        )
+        write(f"Administered By: {drug.administered_by}")
+
+    write("--------------------------------------------------")
+
+    # ================= OUTCOME =================
+    write("OUTCOME")
+
+    if form.outcome:
+        write(f"CPR Ended: {form.outcome.cpr_ended}")
+        write(f"Return Of Circulation: {form.outcome.return_of_circulation}")
+        write(f"ROS HR: {form.outcome.ros_hr}")
+        write(f"ROS BP: {form.outcome.ros_bp}")
+        write(f"ROS RR: {form.outcome.ros_rr}")
+
+        write(f"EMS Arrived: {form.outcome.ems_arrived}")
+        write(f"EMS At: {form.outcome.ems_at}")
+
+        write(f"CPR Handover Time: {form.outcome.cpr_handover_time}")
+
+        write(f"Transferred To: {form.outcome.transferred_to}")
+        write(f"Transferred Time: {form.outcome.transferred_time}")
+        write(f"Escorted By: {form.outcome.escorted_by}")
+
+    write("--------------------------------------------------")
+
+    # ================= NURSES =================
+    write("NURSES SIGNATURES")
+
+    for nurse in form.nurses:
+        write(f"{nurse.name} - {nurse.signature}")
+
+    pdf.showPage()
+    pdf.save()
+
+    buffer.seek(0)
+
+    return StreamingResponse(
+        buffer,
+        media_type="application/pdf",
+        headers={
+            "Content-Disposition": f"attachment; filename=arrest_report_{form_id}.pdf"
+        }
+    )
