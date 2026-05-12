@@ -42,10 +42,139 @@ def get_db():
         db.close()
 
 
-# ---------------- GET ALL FORMS ----------------
-@app.get("/arrest-forms")
-def get_forms(db: Session = Depends(get_db)):
-    return db.query(ArrestForm).order_by(ArrestForm.id.desc()).all()
+```python
+# ---------------- GET SINGLE FORM FULL DETAILS ----------------
+
+@app.get("/arrest-forms/{form_id}")
+def get_form_by_id(form_id: int, db: Session = Depends(get_db)):
+
+    form = db.query(ArrestForm).filter(
+        ArrestForm.id == form_id
+    ).first()
+
+    if not form:
+        return {"message": "Form not found"}
+
+    return {
+        "id": form.id,
+
+        "headerInformation": {
+            "patientName": form.patient_name,
+            "nric": form.nric,
+            "clinicName": form.clinic_name,
+        },
+
+        "basicInformation": {
+            "arrestDateTime": form.basic.arrestDateTime if form.basic else None,
+            "location": form.basic.location if form.basic else None,
+
+            "doctorInformedBy": form.basic.doctor_informed_by if form.basic else None,
+            "doctorAt": form.basic.doctor_at if form.basic else None,
+            "doctorArrivedAt": form.basic.doctor_arrived_at if form.basic else None,
+            "doctorName": form.basic.doctor_name if form.basic else None,
+
+            "relativesInformedBy": form.basic.relatives_informed_by if form.basic else None,
+            "relativesAt": form.basic.relatives_at if form.basic else None,
+            "relativesArrivedAt": form.basic.relatives_arrived_at if form.basic else None,
+            "relativeName": form.basic.relative_name if form.basic else None,
+
+            "ambulanceCalledBy": form.basic.ambulance_called_by if form.basic else None,
+            "ambulanceAt": form.basic.ambulance_at if form.basic else None,
+            "ambulanceArrivedAt": form.basic.ambulance_arrived_at if form.basic else None,
+
+            "hdConcludedAt": form.basic.hd_concluded_at if form.basic else None,
+            "hdBy": form.basic.hd_by if form.basic else None,
+        },
+
+        "airwayVentilation": {
+            "respiration": form.airway.respiration if form.airway else None,
+            "oxygenAdministered": form.airway.oxygen_administered if form.airway else None,
+            "assistVentilationAt": form.airway.assist_ventilation_at if form.airway else None,
+            "ventilationBy": form.airway.ventilation_by if form.airway else None,
+            "intubatedBy": form.airway.intubated_by if form.airway else None,
+            "intubatedTime": form.airway.intubated_time if form.airway else None,
+            "tubeSize": form.airway.tube_size if form.airway else None,
+        },
+
+        "circulation": {
+            "carotidPulse": form.circulation.carotid_pulse if form.circulation else None,
+            "bloodPressure": form.circulation.blood_pressure if form.circulation else None,
+            "bpTime": form.circulation.bp_time if form.circulation else None,
+            "ecgRhythm": form.circulation.ecg_rhythm if form.circulation else None,
+            "ecgTime": form.circulation.ecg_time if form.circulation else None,
+            "chestCompressionAt": form.circulation.chest_compression_at if form.circulation else None,
+            "chestCompressionBy": form.circulation.chest_compression_by if form.circulation else None,
+            "aedApplied": form.circulation.aed_applied if form.circulation else None,
+            "aedTime": form.circulation.aed_time if form.circulation else None,
+        },
+
+        "vascularAccess": {
+            "avfAccess": form.vascular.avf_access if form.vascular else None,
+            "avfTime": form.vascular.avf_time if form.vascular else None,
+            "avfSite": form.vascular.avf_site if form.vascular else None,
+
+            "cvcAccess": form.vascular.cvc_access if form.vascular else None,
+            "cvcTime": form.vascular.cvc_time if form.vascular else None,
+            "cvcSite": form.vascular.cvc_site if form.vascular else None,
+
+            "ivCannulaTime": form.vascular.iv_cannula_time if form.vascular else None,
+            "ivCannulaSite": form.vascular.iv_cannula_site if form.vascular else None,
+            "insertedBy": form.vascular.inserted_by if form.vascular else None,
+        },
+
+        "outcome": {
+            "cprEnded": form.outcome.cpr_ended if form.outcome else None,
+            "returnOfCirculation": form.outcome.return_of_circulation if form.outcome else None,
+
+            "rosHr": form.outcome.ros_hr if form.outcome else None,
+            "rosBp": form.outcome.ros_bp if form.outcome else None,
+            "rosRr": form.outcome.ros_rr if form.outcome else None,
+
+            "emsArrived": form.outcome.ems_arrived if form.outcome else None,
+            "emsAt": form.outcome.ems_at if form.outcome else None,
+
+            "cprHandoverTime": form.outcome.cpr_handover_time if form.outcome else None,
+
+            "transferredTo": form.outcome.transferred_to if form.outcome else None,
+            "transferredTime": form.outcome.transferred_time if form.outcome else None,
+            "escortedBy": form.outcome.escorted_by if form.outcome else None,
+        },
+
+        "observations": [
+            {
+                "time": obs.time,
+                "hr": obs.hr,
+                "bp": obs.bp,
+                "rr": obs.rr,
+                "pupils": obs.pupils,
+                "ecgRhythm": obs.ecg_rhythm,
+                "printedTracing": obs.printed_tracing,
+                "notes": obs.notes,
+            }
+            for obs in form.observations
+        ],
+
+        "drugRecords": [
+            {
+                "time": drug.time,
+                "ecgRhythm": drug.ecg_rhythm,
+                "adrenaline": drug.adrenaline,
+                "atropine": drug.atropine,
+                "route": drug.route,
+                "administeredBy": drug.administered_by,
+            }
+            for drug in form.drug_records
+        ],
+
+        "nurses": [
+            {
+                "name": nurse.name,
+                "signature": nurse.signature,
+            }
+            for nurse in form.nurses
+        ]
+    }
+```
 
 
 # ---------------- CREATE FORM ----------------
