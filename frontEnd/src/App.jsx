@@ -49,7 +49,7 @@ function App() {
 
  
 
-  const [page, setPage] = useState('reportShow')
+  const [page, setPage] = useState('form')
 
     const sendDataToAPI = async (data) => {
       debugger
